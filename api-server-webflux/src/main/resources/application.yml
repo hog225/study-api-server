@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+
+app.health-service-url: http://localhost:8080/health
+
+logging:
+  level:
+    root: ERROR

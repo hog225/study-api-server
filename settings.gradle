@@ -1,0 +1,3 @@
+include ':api-server-webflux'
+include ':api-server-spring-mvc'
+include ':dummy-service'

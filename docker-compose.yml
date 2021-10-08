@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+#  dummy:
+#    build: dummy-service
+#    deploy:
+#      resources:
+#        limits:
+#          #cpus: 0.50
+#          memory: 1024M
+##        reservations:
+##          cpus: 0.25
+##          memory: 128M
+#    ports:
+#      - "8080:8080"
+
+  redis:
+    image: redis:6.0.5
+    command: redis-server --requirepass changeme --port 6379
+    container_name: redis6379
+    hostname: redis6379
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
