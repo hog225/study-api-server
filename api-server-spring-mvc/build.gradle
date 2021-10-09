@@ -19,6 +19,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
 
+	implementation 'org.springframework.data:spring-data-redis:2.5.4'
+	// https://mvnrepository.com/artifact/io.lettuce/lettuce-core
+	implementation 'io.lettuce:lettuce-core:6.1.4.RELEASE'
+// https://mvnrepository.com/artifact/com.google.guava/guava
+	implementation 'com.google.guava:guava:31.0.1-jre'
+
+
+
 }
 jar {
 	enabled = false

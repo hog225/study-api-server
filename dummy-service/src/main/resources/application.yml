@@ -1,14 +1,7 @@
-spring.h2.console.enabled: true
-spring.h2.console.path: /h2
-spring.datasource.hikari.jdbc-url: jdbc:h2:~/test
-spring.datasource.username: sa
-spring.datasource.password:
 
-
+spring.datasource.hikari.initializationFailTimeout: 6000
 
 spring:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: validate
 #    show-sql: true
@@ -19,11 +12,54 @@ spring:
 
 logging:
   level:
-    root: ERROR
+    root: INFO
     #INFO
 
-#    org:
-#      hibernate:
-#        type:
-#          descriptor:
-#            sql: trace
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        docker
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+spring.h2.console.enabled: false
+
+spring.datasource:
+  #driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://mysql:3306/test-db
+  username: user
+  password: pwd
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+spring.h2.console.enabled: true
+spring.h2.console.path: /h2
+spring.datasource.hikari.jdbc-url: jdbc:h2:~/test
+spring.datasource.username: sa
+spring.datasource.password:
+
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+---
+spring:
+  profiles:
+    group:
+      docker-local:
+        - docker
+
+spring.datasource:
+  #driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/test-db
