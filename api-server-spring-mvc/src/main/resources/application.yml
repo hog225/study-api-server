@@ -9,3 +9,6 @@ logging:
     level:
         root: ERROR
 
+redis:
+    password: passwod
+    channel: trainer-channel

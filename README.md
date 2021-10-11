@@ -31,7 +31,7 @@ Data-Redis-Reactive
 
 Gatling
 ```
-
+1. lettuce: 확장 가능하고 쓰레드 세이프한 레디스 클라이언트이다. 동기, 비동기, 리액티브 하게 사용될 수 있다. 
 
 ## 환경 
 - api server
@@ -56,9 +56,19 @@ Gatling
 - https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.webclient.runtime
 - https://www.baeldung.com/spring-webclient-json-list
 - https://github.com/callicoder/spring-webclient-webtestclient-demo/tree/master/src/main/java/com/example/webclientdemo
-
+- https://www.baeldung.com/spring-boot-redis-cache //Redis 매서드 Chashing 에 대한 내용 
+- https://ozofweird.tistory.com/entry/Spring-Boot-Redis-Cache-MySQL-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B0%84%EB%8B%A8%ED%95%9C-API-%EC%A0%9C%EC%9E%91 // 캐싱에 대한 내용 
 ## Test
 
+## redis 
+- redis Sentinel 
+  - 자동으로 Fail over 를 해주거나, 서비스 Discovery를 해주고 서비스를 모니터링 하는 레지스 기능
+  - redis-server /path/to/sentinel.conf --sentinel
+  
+- redis-cli
+  - redis client 이다. 
+  - HGETALL: hash type data 를 가져올떄 
+  - KEYS *: 모든 키 가져 오기 
 
 ## todo
 1. 캐싱 
