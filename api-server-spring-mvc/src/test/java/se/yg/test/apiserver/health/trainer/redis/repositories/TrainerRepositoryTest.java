@@ -7,6 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import se.yg.test.apiserver.health.trainer.redis.entity.Trainer;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,15 +21,25 @@ class TrainerRepositoryTest {
 
     @Test
     void redisCreateTest(){
-        Trainer trainer = Trainer.builder()
-                .id(1L)
-                .name("trainer 1")
-                .roleSet(Trainer.RoleSet.HEAD)
-                .uuid(UUID.randomUUID().toString())
-                .age(23)
-                .members(Lists.list("member1", "member2"))
-                .build();
-        trainerRepository.save(trainer);
+        LongStream.range(1, 10000).forEach(num ->{
+                Trainer trainer = Trainer.builder()
+                        .id(num)
+                        .name("trainer 1")
+                        .roleSet(Trainer.RoleSet.HEAD)
+                        .uuid(UUID.randomUUID().toString())
+                        .age(23)
+                        .members(Lists.list("member1", "member2"))
+                        .build();
+                trainerRepository.save(trainer);
+            }
+        );
+    }
+
+    @Test
+    void redisBulkDelete(){
+        LongStream.range(1, 10000).forEach(num ->{
+            trainerRepository.deleteById(num);
+        });
     }
 
     @Test
