@@ -1,6 +1,9 @@
 package se.yg.test.dummyservice.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import se.yg.test.dummyservice.config.EhcacheConfig;
+import se.yg.test.dummyservice.config.RedisCacheConfig;
 
 import javax.persistence.*;
 
@@ -10,6 +13,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @ToString(exclude = "trainer")
+//@Cacheable
+//@org.hibernate.annotations.Cache(region = EhcacheConfig.DB_CACHE, usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

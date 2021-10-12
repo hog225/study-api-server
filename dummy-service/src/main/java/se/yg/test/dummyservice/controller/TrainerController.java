@@ -3,7 +3,6 @@ package se.yg.test.dummyservice.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,10 +23,12 @@ import java.util.UUID;
 public class TrainerController {
 
     private final TrainerService trainerService;
+
     @ExecutionTime
     @GetMapping("/trainer/{trainerId}")
     public ResponseEntity<TrainerDTO> getTrainer(@PathVariable("trainerId") Long trainerId){
         TrainerDTO tdto = trainerService.getTrainer(trainerId);
+        log.info(tdto);
         return new ResponseEntity<>(tdto, HttpStatus.OK);
     }
 

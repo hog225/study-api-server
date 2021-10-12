@@ -8,10 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import se.yg.test.dummyservice.dto.TrainerDTO;
 import se.yg.test.dummyservice.entity.Trainer;
-import se.yg.test.dummyservice.entity.TrainerClass;
 
 import java.util.List;
-import java.util.Set;
 
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
 

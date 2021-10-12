@@ -1,25 +1,58 @@
 
+
 spring.datasource.hikari.initializationFailTimeout: 6000
 
 spring:
+  jpa:
     hibernate:
-      ddl-auto: validate
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
+      ddl-auto: create
+    properties:
 
+###########################ehcache config #############################################
+      javax:
+        persistence:
+          sharedcache:
+            # Cacheable 이 설정된 엔티티에 만 캐시를 적용
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        cache:
+          # 이차 캐시 활성화 세션 팩토리 레벨에서의 캐시시          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.internal.JCacheRegionFactory
+        temp:
+          use_jdbc_metadata_defaults: false
+########################################################################
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+
+
+
+  profiles:
+    group:
+      docker-local-test:
+      - docker
+      - docker-local
+#  cache:
+#    type: redis
+#  cache:
+#    type: redis
+
+redis:
+  host: localhost
+  port: 6379
+  password: passwod
+  timeout: 60000
 
 logging:
   level:
-    root: ERROR
+    root: INFO
     #INFO
-
-#    org:
-#      hibernate:
-#        type:
-#          descriptor:
-#            sql: trace
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
 
 ---
 spring:
@@ -35,7 +68,7 @@ spring.h2.console.enabled: false
 
 spring.datasource:
   #driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://mysql:3306/test-db
+  url: jdbc:mysql://mysql-api:3307/test-db
   username: user
   password: pwd
 
@@ -58,14 +91,14 @@ spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
 ---
 spring:
-  profiles:
-    group:
-      docker-local:
-        - docker
+  config:
+    activate:
+      on-profile: docker-local
 
 spring.datasource:
   #driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/test-db
+  url: jdbc:mysql://localhost:3307/test-db
+
 
 logging:
   level:

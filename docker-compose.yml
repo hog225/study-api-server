@@ -1,22 +1,24 @@
-version: '3'
+version: '3.6'
 
 services:
+
   dummy:
     build: dummy-service
     deploy:
       resources:
         limits:
-          #cpus: 0.50
-          memory: 512M
-#        reservations:
-#          cpus: 0.25
-#          memory: 128M
+          cpus: 0.25
+          memory: 2048M
+##        reservations:
+##          cpus: 0.25
+##          memory: 128M
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+
     depends_on:
-      mysql:
+      mysql-api:
         condition: service_healthy
 
   redis:
@@ -24,22 +26,33 @@ services:
     command: redis-server --requirepass passwod --port 6379
     container_name: redis6379
     hostname: redis6379
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 2048M
     labels:
       - "name=redis"
       - "mode=standalone"
     ports:
       - 6379:6379
 
-  mysql:
+  mysql-api:
     image: mysql:5.7
-    mem_limit: 350m
+#    mem_limit: 350m
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 2048M
     ports:
-      - 3306:3306
+      - 3307:3307
     environment:
       - MYSQL_ROOT_PASSWORD=rootpwd
       - MYSQL_DATABASE=test-db
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pwd
+      - MYSQL_TCP_PORT=3307
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-uuser", "-ppwd", "-h", "localhost"]
       interval: 10s

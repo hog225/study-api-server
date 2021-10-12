@@ -2,18 +2,21 @@ package se.yg.test.dummyservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import se.yg.test.dummyservice.entity.TrainerClass;
-import se.yg.test.dummyservice.repositories.MemberRepository;
-import se.yg.test.dummyservice.repositories.TrainerRepository;
+import se.yg.test.dummyservice.config.EhcacheConfig;
 import se.yg.test.dummyservice.dto.TrainerDTO;
 import se.yg.test.dummyservice.entity.Member;
 import se.yg.test.dummyservice.entity.Trainer;
+import se.yg.test.dummyservice.entity.TrainerClass;
+import se.yg.test.dummyservice.repositories.MemberRepository;
+import se.yg.test.dummyservice.repositories.TrainerRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +84,10 @@ public class TrainerServiceImpl implements TrainerService{
     }
 
     @Override
+
+    @Cacheable(value = EhcacheConfig.TRAINERDTO_CACHE, key ="#id") // ehcache config
+    //@Cacheable(value = "usersCache", key="#id",  unless = "#result == null")
+    //@Transactional(propagation = Propagation.REQUIRES_NEW)
     public TrainerDTO getTrainer(Long id) {
 
         List<Object[]> res = trainerRepository.getTrainerWithMember(id);
@@ -97,6 +104,11 @@ public class TrainerServiceImpl implements TrainerService{
 
         return entityToDto(t, members);
 
+    }
+
+
+    public TrainerDTO getTrainerWrapper(Long id){
+        return getTrainer(id);
     }
 
     @Override
