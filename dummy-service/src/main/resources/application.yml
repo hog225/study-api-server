@@ -63,23 +63,29 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 spring.h2.console.enabled: false
+
 
 spring.datasource:
   #driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://mysql-api:3307/test-db
+  url: jdbc:mysql://mysql-api:3307/trainerdb
   username: user
   password: pwd
 
+spring.jpa.database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
 logging:
   level:
-    root: ERROR
+    root: INFO
 ---
 spring:
   config:
     activate:
       on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: create
 
 spring.h2.console.enabled: true
 spring.h2.console.path: /h2
@@ -97,7 +103,7 @@ spring:
 
 spring.datasource:
   #driver-class-name: com.mysql.cj.jdbc.Driver
-  url: jdbc:mysql://localhost:3307/test-db
+  url: jdbc:mysql://localhost:3307/trainerdb
 
 
 logging:

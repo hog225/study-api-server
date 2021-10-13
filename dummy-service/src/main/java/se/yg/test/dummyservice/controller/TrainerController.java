@@ -67,6 +67,19 @@ public class TrainerController {
     }
 
     @ExecutionTime
+    @PostMapping(value = "/trainer-redis", consumes = "application/json")
+    public Long addTrainerRedis(@RequestBody TrainerDTO body){
+
+
+        if (body.getUuid() == null)
+            body.setUuid(UUID.randomUUID().toString());
+
+        Long tid = trainerService.addTrainerRedis(body);
+
+        return tid;
+    }
+
+    @ExecutionTime
     @DeleteMapping("/trainer/{trainerId}")
     public Long delTrainer(@PathVariable("trainerId") Long trainerId){
         try{

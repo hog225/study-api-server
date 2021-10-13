@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import se.yg.test.dummyservice.entity.Member;
 import se.yg.test.dummyservice.entity.Trainer;
 import se.yg.test.dummyservice.entity.TrainerClass;
 import se.yg.test.dummyservice.repositories.MemberRepository;
+import se.yg.test.dummyservice.repositories.TrainerDtoRepository;
 import se.yg.test.dummyservice.repositories.TrainerRepository;
 
 import java.util.*;
@@ -28,6 +32,8 @@ public class TrainerServiceImpl implements TrainerService{
 
     private final TrainerRepository trainerRepository;
     private final MemberRepository memberRepository;
+    private final RedisTemplate redisTemplate;
+    private final TrainerDtoRepository trainerDtoRepository;
 
     private Trainer dtoToEntity(TrainerDTO dto){
         Trainer trainer = Trainer.builder()
@@ -83,8 +89,40 @@ public class TrainerServiceImpl implements TrainerService{
         return trainer.getId();
     }
 
-    @Override
+    private Long getRedisTrainerDtoIndex(){
+        String indexKey = "KeyTrainerDto";
+        String hashKey = "id";
+        HashOperations<String, String, Long> RedisVal= redisTemplate.opsForHash();
+        Long id = RedisVal.get(indexKey, hashKey);
+        if (id == null)
+            return 1L;
+        else
+            return id + 1;
 
+    }
+
+    private void setRedisTrainerDtoIndex(Long idx){
+        String indexKey = "KeyTrainerDto";
+        String hashKey = "id";
+        HashOperations<String, String, Long> RedisVal= redisTemplate.opsForHash();
+
+        RedisVal.put(indexKey, hashKey, idx);
+    }
+
+
+    @Override
+    public Long addTrainerRedis(TrainerDTO trainerDTO) {
+        Long id = getRedisTrainerDtoIndex();
+        trainerDTO.setId(id);
+        TrainerDTO save = trainerDtoRepository.save(trainerDTO);
+        setRedisTrainerDtoIndex(id);
+
+        return save.getId();
+
+    }
+
+
+    @Override
     @Cacheable(value = EhcacheConfig.TRAINERDTO_CACHE, key ="#id") // ehcache config
     //@Cacheable(value = "usersCache", key="#id",  unless = "#result == null")
     //@Transactional(propagation = Propagation.REQUIRES_NEW)

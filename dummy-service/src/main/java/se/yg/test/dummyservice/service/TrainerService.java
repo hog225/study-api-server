@@ -20,7 +20,7 @@ public interface TrainerService {
 
     Long deleteTrainer(Long id);
 
-
+    Long addTrainerRedis(TrainerDTO trainerDTO);
 
 
 

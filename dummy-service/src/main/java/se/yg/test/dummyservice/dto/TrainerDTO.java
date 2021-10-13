@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 import se.yg.test.dummyservice.entity.TrainerClass;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Set;
 @ToString
 @RedisHash("TrainerDTO")
 public class TrainerDTO implements Serializable {
+    @Id
     private Long id;
     private String name;
     private int age;

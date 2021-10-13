@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import se.yg.test.dummyservice.dto.TrainerDTO;
 import se.yg.test.dummyservice.entity.Trainer;
 import se.yg.test.dummyservice.entity.TrainerClass;
@@ -20,9 +24,11 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("local")
 class TrainerServiceImplTest {
     @Autowired
     TrainerService trainerService;
+
 
     @Test
     public void beforeTask(){
@@ -126,5 +132,34 @@ class TrainerServiceImplTest {
         System.out.println(trainerService.getTrainer(id));
 
     }
+
+    @Test
+    public void redisRepositorySave(){
+        Set<TrainerClass> role = new HashSet<>();
+        role.add(TrainerClass.NORMAL);
+        role.add(TrainerClass.MANAGER);
+        role.add(TrainerClass.HEAD);
+        List<String> memberNameList = new ArrayList<>();
+        memberNameList.add("memberName ... 1");
+        memberNameList.add("memberName ... 2");
+        memberNameList.add("memberName ... 3");
+        memberNameList.add("memberName ... 4");
+        memberNameList.add("memberName ... 5");
+        TrainerDTO trainerDTO = TrainerDTO.builder()
+                .id(1L)
+                .name("name...")
+                .age(19)
+                .roleSet(role)
+                .memberNameList(memberNameList)
+                .uuid(UUID.randomUUID().toString())
+                .build();
+        trainerService.addTrainerRedis(trainerDTO);
+        trainerService.addTrainerRedis(trainerDTO);
+        trainerService.addTrainerRedis(trainerDTO);
+        trainerService.addTrainerRedis(trainerDTO);
+    }
+
+
+
 
 }
