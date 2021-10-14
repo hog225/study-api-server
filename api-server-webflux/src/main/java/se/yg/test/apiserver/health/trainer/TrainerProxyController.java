@@ -35,6 +35,14 @@ public class TrainerProxyController {
     }
 
 
+    @PostMapping("/trinaer-mono")
+    Mono<Long> addTrainerMono(@RequestBody TrainerDto trainerDto){
+
+        Mono<TrainerDto> trainerDtoMono = Mono.just(trainerDto);
+        service.addTrainer1(trainerDtoMono);
+
+        return Mono.just(1L);
+    }
 
     @GetMapping("/test/web")
     public ResponseEntity<String> handle(){

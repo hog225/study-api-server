@@ -75,9 +75,21 @@ spring.datasource:
 
 spring.jpa.database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
+redis:
+  host: redis6379
+  port: 6379
+  password: passwod
+  timeout: 60000
+
+
 logging:
   level:
-    root: INFO
+    root: ERROR
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: ERROR
 ---
 spring:
   config:

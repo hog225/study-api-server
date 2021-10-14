@@ -18,6 +18,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE'
 }
 jar {
 	enabled = false

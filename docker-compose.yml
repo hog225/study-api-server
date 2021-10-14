@@ -7,11 +7,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.25
           memory: 2048M
-##        reservations:
-##          cpus: 0.25
-##          memory: 128M
+#        reservations:
+#          cpus: 0.25
+#          memory: 128M
     ports:
       - "8080:8080"
     environment:

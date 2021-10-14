@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import reactor.blockhound.BlockHound;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +25,16 @@ class TrainerProxyServiceTest {
         TrainerDto trainerDto = service.getTrainer(3L).block();
         System.out.println(trainerDto);
     }
+
+    @Test
+    void getTrainerSubscribe() throws InterruptedException {
+
+        TrainerDto t = service.getTrainer(3L)
+                .block();
+
+        System.out.println(t);
+    }
+
 
     @Test
     void postTrainer(){
@@ -54,8 +65,13 @@ class TrainerProxyServiceTest {
 
     @Test
     void getTrainer2(){
-        ResponseEntity<String> rEntity = service.getTrainer1(6L).block();
-        System.out.println(rEntity);
+        //BlockHound.install();
+        //ResponseEntity<String> rEntity = service.getTrainer1(6L).block();
+        //System.out.println(rEntity);
+        service.getTrainer1(6L).subscribe(t-> {
+
+        });
+
 
     }
 
