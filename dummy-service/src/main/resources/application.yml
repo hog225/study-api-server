@@ -1,5 +1,11 @@
 
 
+server:
+  tomcat:
+    threads:
+      max: 100
+  max-http-header-size: 8KB
+
 spring.datasource.hikari.initializationFailTimeout: 6000
 
 spring:
